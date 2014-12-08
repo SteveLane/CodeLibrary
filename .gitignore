@@ -1,0 +1,14 @@
+# Git ignore file
+*.pdf
+*.doc
+*.docx
+*.xls
+*.xlsx
+*~
+*.aux
+*.log
+*.lot
+*.ttt
+*.out
+*.bbl
+*.Rhistory
