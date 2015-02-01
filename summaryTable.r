@@ -6,8 +6,14 @@
 ## Synopsis: Create summary tables for grouped data (e.g. male vs. female)
 ################################################################################
 ################################################################################
+## Calculate mean and sd
+summaryCont1 <- function(vals, dig = 2){
+    estMean <- formatC(mean(vals, na.rm = TRUE), digits = dig, format = "f")
+    estSd <- formatC(sd(vals, na.rm = TRUE), digits = dig - 1, format = "f")
+    paste(estMean, " (", estSd, ")", sep = "")
+}
 ## Calculate median and iqr
-summaryCont <- function(vals, dig = 1){
+summaryCont2 <- function(vals, dig = 1){
     med <- formatC(median(vals, na.rm = TRUE), digits = dig, format = "f")
     iqr <- formatC(quantile(vals, probs = c(0.25, 0.75), na.rm = TRUE), digits =
                    dig, format = "f")
@@ -15,7 +21,7 @@ summaryCont <- function(vals, dig = 1){
 }
 ## Calculate percentage and number
 summaryBin <- function(vals){
-    n <- sum(vals)
+    n <- sum(vals, na.rm = TRUE)
     prop <- formatC(mean(vals, na.rm = TRUE)*100, digits = 1, format = "f")
     paste(prop, " (", n, ")", sep = "")
 }
@@ -24,8 +30,12 @@ summaryBin <- function(vals){
 createRow <- function(data, formula, varType, dig = 1){
     if(varType == 0){
         mf <- model.frame(formula, data)
-        output <- c(summaryCont(mf[,1], dig),
-                    tapply(mf[,1], mf[,2], summaryCont, dig = dig))
+        output <- c(summaryCont1(mf[,1], dig),
+                    tapply(mf[,1], mf[,2], summaryCont1, dig = dig))
+    } else if(varType == 3){
+        mf <- model.frame(formula, data)
+        output <- c(summaryCont2(mf[,1], dig),
+                    tapply(mf[,1], mf[,2], summaryCont2, dig = dig))
     } else if (varType == 1){
         mf <- model.frame(formula, data)
         output <- c(summaryBin(mf[,1]), tapply(mf[,1], mf[,2], summaryBin))
