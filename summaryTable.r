@@ -9,7 +9,7 @@
 ## Calculate mean and sd
 summaryCont1 <- function(vals, dig = 2){
     estMean <- formatC(mean(vals, na.rm = TRUE), digits = dig, format = "f")
-    estSd <- formatC(sd(vals, na.rm = TRUE), digits = dig - 1, format = "f")
+    estSd <- formatC(sd(vals, na.rm = TRUE), digits = dig, format = "f")
     paste(estMean, " (", estSd, ")", sep = "")
 }
 ## Calculate median and iqr
@@ -74,6 +74,11 @@ summaryTable <- function(data, variables, strata, varType, colHead, dig = 1){
         tab <- rbind(tab, createRow(data, form, varType[i], dig[i]))
     }
     tab[-1,]
+}
+## Count the number of missing values
+## Function to report missing data
+sumIsNA <- function(x){
+    sum(is.na(x))
 }
 ################################################################################
 ################################################################################
